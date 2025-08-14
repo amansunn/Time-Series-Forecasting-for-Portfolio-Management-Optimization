@@ -34,8 +34,10 @@ class ARIMAModel:
                                   suppress_warnings=True)
         return self.model
         
-    def forecast(self, steps):
-        return self.model.predict(n_periods=steps)
+    def forecast(self, steps, alpha=0.05):
+        """Generate forecast with confidence intervals"""
+        forecast = self.model.predict(n_periods=steps, return_conf_int=True, alpha=alpha)
+        return forecast[0], forecast[1]
     
     @staticmethod
     def calculate_metrics(actual, predicted):
